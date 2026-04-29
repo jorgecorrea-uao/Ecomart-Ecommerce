@@ -2,6 +2,8 @@ const express = require('express');
 const sequelize = require('./src/config/db');
 const app = express();
 
+app.disable('x-powered-by');
+
 app.use(express.json());
 
 const authRoutes = require('./src/routes/auth.routes');
