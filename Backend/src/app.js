@@ -1,16 +1,16 @@
-const express = require("express")
-const cors = require('cors')
-const authRoutes = require('./routes/auth.routes')
+const express = require('express');
+const sequelize = require('./src/config/db');
+const app = express();
 
-const app = express()
+app.disable('x-powered-by');
 
-app.use(cors())
-app.use(express.json())
+app.use(express.json());
 
-app.use('/api/auth', authRoutes)
+const authRoutes = require('./src/routes/auth.routes');
+app.use('/api/auth', authRoutes);
 
-app.get('/api/health', (req, res) => {
-    res.json({success: true, message: "Ecomart API corriendo correctamente"})
-})
+sequelize.sync({ alter: true })
+  .then(() => console.log('Base de datos sincronizada'))
+  .catch(err => console.error('Error al sincronizar la DB:', err));
 
-module.exports = app
+module.exports = app;
