@@ -1,0 +1,16 @@
+const express = require('express');
+const sequelize = require('./src/config/db');
+const app = express();
+
+app.disable('x-powered-by');
+
+app.use(express.json());
+
+const authRoutes = require('./src/routes/auth.routes');
+app.use('/api/auth', authRoutes);
+
+sequelize.sync({ alter: true })
+  .then(() => console.log('Base de datos sincronizada'))
+  .catch(err => console.error('Error al sincronizar la DB:', err));
+
+module.exports = app;
