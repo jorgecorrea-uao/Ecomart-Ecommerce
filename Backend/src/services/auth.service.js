@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-require('dotenv').config();
 
 const userRepository = require('../repositories/user.repository');
 

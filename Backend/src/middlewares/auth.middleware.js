@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
 
 const authMiddleware = (req, res, next) => {
   try {
@@ -21,14 +20,10 @@ const authMiddleware = (req, res, next) => {
 };
 
 const adminMiddleware = (req, res, next) => {
-  if (req.user.role !== 'admin') {
+  if (!req.user || req.user.role !== 'admin') {
     return res.status(403).json({ success: false, message: 'Acceso denegado' });
   }
   next();
 };
 
-<<<<<<< HEAD
 module.exports = { authMiddleware, adminMiddleware };
-=======
-module.exports = { authMiddleware, adminMiddleware };
->>>>>>> origin/main
