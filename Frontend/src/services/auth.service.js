@@ -1,10 +1,10 @@
-import axios from "axios"
+import api from "./api"
 
-const API_URL = `${import.meta.env.VITE_API_URL}/auth`
+const API_URL = "/auth"
 
 const authService = {
     async register(nombre, email, password) {
-        const response = await axios.post(`${API_URL}/register`, {
+        const response = await api.post(`${API_URL}/register`, {
             nombre,
             email,
             password
@@ -13,7 +13,7 @@ const authService = {
     }, 
 
     async login(email, password) {
-        const response = await axios.post(`${API_URL}/login`, {
+        const response = await api.post(`${API_URL}/login`, {
             email,
             password
         })
@@ -31,7 +31,7 @@ const authService = {
     async logout() {
         const refreshToken = localStorage.getItem("refreshToken")
         if(refreshToken) {
-            await axios.post(`${API_URL}/logout`, { refreshToken }).catch(() => {})
+            await api.post(`${API_URL}/logout`, { refreshToken }).catch(() => {})
         }
         localStorage.removeItem("token")
         localStorage.removeItem("refreshToken")
