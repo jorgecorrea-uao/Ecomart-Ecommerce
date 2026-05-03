@@ -1,15 +1,14 @@
 import { useState, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { useAuth } from "../context/AuthContext"
-import "./Auth.css"
+import { useAuth } from "../../context/AuthContext"
+import "./auth.css"
 
-const Register = () => {
+const RegisterPage = () => {
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
     const { register } = useAuth()
     const navigate = useNavigate()
 
-    // Refs para capturar valores aunque el navegador autocomplete sin disparar onChange
     const nombreRef = useRef()
     const emailRef = useRef()
     const passwordRef = useRef()
@@ -18,7 +17,6 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        // Leer directo del DOM — soluciona el problema del autocompletado del navegador
         const nombre = nombreRef.current.value.trim()
         const email = emailRef.current.value.trim()
         const password = passwordRef.current.value
@@ -124,4 +122,4 @@ const Register = () => {
     )
 }
 
-export default Register
+export default RegisterPage

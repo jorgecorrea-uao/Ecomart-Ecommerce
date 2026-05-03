@@ -1,9 +1,9 @@
-import {useNavigate, useSearchParams} from "react-router-dom"
-import { useAuth } from "../context/AuthContext"
-import "./Home.css"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../context/AuthContext"
+import "./home.css"
 
-const Home = () => {
-    const {user, logout} = useAuth()
+const HomePage = () => {
+    const { user, logout } = useAuth()
     const navigate = useNavigate()
 
     const handleLogout = () => {
@@ -16,7 +16,8 @@ const Home = () => {
             <div className="home-card">
                 <div className="home-icon">🌿</div>
                 <h2 className="home-title">Bienvenido/a, {user?.nombre || "Usuario"}</h2>
-                <p className="home-subtitle">Has iniciado sesion correctamente en Ecomart</p>
+                <p className="home-subtitle">Has iniciado sesión correctamente en Ecomart</p>
+
                 <div className="home-info">
                     <span className="info-label">Email:</span>
                     <span className="info-value">{user?.email}</span>
@@ -28,12 +29,11 @@ const Home = () => {
                 </div>
 
                 <button className="logout-btn" onClick={handleLogout}>
-                    Cerrar sesion
+                    Cerrar sesión
                 </button>
             </div>
-
         </div>
     )
 }
 
-export default Home
+export default HomePage
