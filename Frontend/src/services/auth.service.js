@@ -21,14 +21,20 @@ const authService = {
         
         if(response.data.success){
             localStorage.setItem("token", response.data.data.accessToken)
+            localStorage.setItem("refreshToken", response.data.data.refreshToken)
             localStorage.setItem("user", JSON.stringify(response.data.data.user))
         }
 
         return response.data
     },
 
-    logout() {
+    async logout() {
+        const refreshToken = localStorage.getItem("refreshToken")
+        if(refreshToken) {
+            await axios.post(`${API_URL}/logout`, { refreshToken }).catch(() => {})
+        }
         localStorage.removeItem("token")
+        localStorage.removeItem("refreshToken")
         localStorage.removeItem("user")
     },
 
