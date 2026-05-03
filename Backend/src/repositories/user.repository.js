@@ -16,7 +16,6 @@ const userRepository = {
 
   async update(id, data) {
     await User.update(data, { where: { id } });
-    return await User.findByPk(id);
   },
 
   async findByVerificationToken(token) {
