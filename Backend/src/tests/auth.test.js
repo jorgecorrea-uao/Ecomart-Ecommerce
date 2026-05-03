@@ -3,7 +3,7 @@ const userRepository = require('../repositories/user.repository')
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
-JsonWebTokenError.mock("../repositories/user.repository")
+jest.mock("../repositories/user.repository")
 
 describe("AuthService - register", () => {
     beforeEach(() => {
@@ -11,7 +11,7 @@ describe("AuthService - register", () => {
         process.env.JWT_SECRET = "test_secret"
     })
 
-    test("debe registar un usuario correctamente", async () => {
+    test("debe registrar un usuario correctamente", async () => {
         userRepository.findByEmail.mockResolvedValue(null)
         userRepository.save.mockResolvedValue({
             id: 1,
@@ -23,22 +23,22 @@ describe("AuthService - register", () => {
         const result = await authService.register("Juan Camilo", "juan@email.com", "password123")
 
         expect(result).toHaveProperty("id")
-        expect(result.email).toHaveProperty("juan@email.com")
+        expect(result.email).toBe("juan@email.com")
         expect(userRepository.save).toHaveBeenCalledTimes(1)
     })
 
-    test("debe lanzar error si el email ya esta registrado",  async () => {
+    test("debe lanzar error si el email ya está registrado", async () => {
         userRepository.findByEmail.mockResolvedValue({
             id: 1,
             email: "juan@email.com"
         })
 
-        await expect(authService.register("Juan", "juan@email.com", "password123")).rejects.toThrow("El email ya esta registradp")
+        await expect(authService.register("Juan", "juan@email.com", "password123")).rejects.toThrow("El email ya está registrado")
     })
 })
 
 describe("AuthService - login", () => {
-    test("debe retornar token y usuario con credenciales correctas", async() => {
+    test("debe retornar accessToken, refreshToken y usuario con credenciales correctas", async() => {
         const hashedPassword = await bcrypt.hash("password123", 10)
         userRepository.findByEmail.mockResolvedValue({
             id:1,
@@ -47,11 +47,12 @@ describe("AuthService - login", () => {
             password: hashedPassword,
             role: "user"
         })
+        userRepository.update.mockResolvedValue({})
 
         const result = await authService.login("juan@email.com", "password123")
 
-        expect(result).toHaveProperty("token")
-        expect(result.user.email).toHaveProperty("juan@email.com")
+        expect(result).toHaveProperty("accessToken")
+        expect(result.user.email).toBe("juan@email.com")
         expect(result.user).not.toHaveProperty("password")
     })
 
@@ -59,7 +60,7 @@ describe("AuthService - login", () => {
         userRepository.findByEmail.mockResolvedValue(null)
 
         await expect(
-            authService.login("noexiste@email.com")).rejects.toThrow("email o contraseña incorrectos")
+            authService.login("noexiste@email.com", "password123")).rejects.toThrow("Email o contraseña incorrectos")
     })
 
     test("debe lanzar error si la contraseña es incorrecta", async() => {
