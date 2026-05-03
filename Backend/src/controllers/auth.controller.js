@@ -76,7 +76,10 @@ const authController = {
       return res.status(200).json({ success: true, message: 'Sesión cerrada exitosamente' });
 
     } catch (error) {
-      return res.status(200).json({ success: true, message: 'Sesión cerrada exitosamente' });
+      if (error.message === 'Refresh token inválido') {
+        return res.status(401).json({ success: false, message: error.message });
+      }
+      return res.status(500).json({ success: false, message: 'Error interno del servidor' });
     }
   },
 
