@@ -80,6 +80,16 @@
     color: #9ca3af;
 }
 
+.auth-success {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    color: #15803d;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    text-align: center;
+}
+
 .auth-error {
     background: #fef2f2;
     border: 1px solid #fecaca;

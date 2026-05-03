@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
 import "./auth.css"
 
@@ -9,6 +9,8 @@ const LoginPage = () => {
     const [loading, setLoading] = useState(false)
     const { login } = useAuth()
     const navigate = useNavigate()
+    const location = useLocation()
+    const successMessage = location.state?.message || ""
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -45,6 +47,7 @@ const LoginPage = () => {
                 </div>
 
                 <form className="auth-form" onSubmit={handleSubmit} noValidate>
+                    {successMessage && <div className="auth-success">{successMessage}</div>}
                     {error && <div className="auth-error">{error}</div>}
 
                     <div className="form-group">
@@ -78,6 +81,9 @@ const LoginPage = () => {
                     </button>
                 </form>
 
+                <p className="auth-redirect">
+                    <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
+                </p>
                 <p className="auth-redirect">
                     ¿No tienes cuenta?{" "}
                     <Link to="/register">Regístrate aquí</Link>

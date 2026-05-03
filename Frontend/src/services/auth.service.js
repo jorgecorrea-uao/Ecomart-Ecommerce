@@ -38,6 +38,16 @@ const authService = {
         localStorage.removeItem("user")
     },
 
+    async forgotPassword(email) {
+        const response = await api.post(`${API_URL}/forgot-password`, { email })
+        return response.data
+    },
+
+    async resetPassword(token, password) {
+        const response = await api.post(`${API_URL}/reset-password/${token}`, { password })
+        return response.data
+    },
+
     getCurrentUser() {
         const user = localStorage.getItem("user")
         return user ? JSON.parse(user) : null
