@@ -1,9 +1,11 @@
 const express = require('express');
+const cors = require('cors');
 const sequelize = require('./src/config/db');
 const app = express();
 
 app.disable('x-powered-by');
 
+app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(express.json());
 
 const authRoutes = require('./src/routes/auth.routes');
