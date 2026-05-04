@@ -9,6 +9,24 @@
     position: sticky;
     top: 0;
     z-index: 100;
+    gap: 16px;
+}
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    padding-left: 24px;
+}
+
+.navbar-link.admin {
+    color: #7c3aed;
+    font-weight: 600;
+}
+
+.navbar-link.admin:hover {
+    background: #f5f3ff;
 }
 
 .navbar-brand {

@@ -7,6 +7,9 @@ import RegisterPage from "../pages/auth/RegisterPage"
 import ForgotPasswordPage from "../pages/auth/ForgotPasswordPage"
 import ResetPasswordPage from "../pages/auth/ResetPasswordPage"
 import HomePage from "../pages/home/HomePage"
+import ProductsPage from "../pages/products/ProductsPage"
+import ProductDetailPage from "../pages/products/ProductDetailPage"
+import AdminProductsPage from "../pages/admin/AdminProductsPage"
 
 const AppRouter = () => {
     return (
@@ -14,7 +17,7 @@ const AppRouter = () => {
             <BrowserRouter>
                 <Navbar />
                 <Routes>
-                    <Route path="/" element={<Navigate to="/login" />} />
+                    <Route path="/" element={<Navigate to="/products" />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
@@ -22,6 +25,12 @@ const AppRouter = () => {
                     <Route
                         path="/home"
                         element={<ProtectedRoute><HomePage /></ProtectedRoute>}
+                    />
+                    <Route path="/products" element={<ProductsPage />} />
+                    <Route path="/products/:id" element={<ProductDetailPage />} />
+                    <Route
+                        path="/admin/products"
+                        element={<ProtectedRoute requiredRole="admin"><AdminProductsPage /></ProtectedRoute>}
                     />
                 </Routes>
             </BrowserRouter>

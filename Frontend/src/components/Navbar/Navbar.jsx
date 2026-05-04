@@ -13,9 +13,15 @@ const Navbar = () => {
 
     return (
         <nav className="navbar">
-            <Link to={user ? "/home" : "/login"} className="navbar-brand">
+            <Link to="/products" className="navbar-brand">
                 🛒 EcoMart
             </Link>
+            <div className="navbar-links">
+                <Link to="/products" className="navbar-link">Productos</Link>
+                {user?.role === "admin" && (
+                    <Link to="/admin/products" className="navbar-link admin">Admin</Link>
+                )}
+            </div>
             <div className="navbar-actions">
                 {user ? (
                     <>
