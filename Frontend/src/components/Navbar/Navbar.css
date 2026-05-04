@@ -9,6 +9,24 @@
     position: sticky;
     top: 0;
     z-index: 100;
+    gap: 16px;
+}
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    padding-left: 24px;
+}
+
+.navbar-link.admin {
+    color: #7c3aed;
+    font-weight: 600;
+}
+
+.navbar-link.admin:hover {
+    background: #f5f3ff;
 }
 
 .navbar-brand {
@@ -69,4 +87,37 @@
 .navbar-btn:hover {
     border-color: #dc2626;
     color: #dc2626;
+}
+
+.navbar-cart {
+    position: relative;
+    font-size: 22px;
+    text-decoration: none;
+    padding: 4px;
+    border-radius: 8px;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-cart:hover {
+    background: #f3f4f6;
+}
+
+.navbar-cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #dc2626;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    line-height: 1;
 }

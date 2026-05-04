@@ -1,0 +1,338 @@
+.admin-page {
+    padding: 40px 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.admin-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.admin-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 4px;
+}
+
+.admin-subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.admin-create-btn {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+    white-space: nowrap;
+}
+
+.admin-create-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.admin-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.admin-loading,
+.admin-empty {
+    text-align: center;
+    padding: 60px 0;
+    color: #6b7280;
+    font-size: 16px;
+}
+
+.admin-table-wrap {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+.admin-table thead tr {
+    background: #f9fafb;
+}
+
+.admin-table th {
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6b7280;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-table td {
+    padding: 14px 16px;
+    font-size: 14px;
+    color: #374151;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+}
+
+.admin-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.admin-td-name {
+    font-weight: 500;
+    color: #111827 !important;
+}
+
+.admin-td-price {
+    font-weight: 600;
+    color: #15803d !important;
+}
+
+.admin-category-tag {
+    font-size: 11px;
+    font-weight: 600;
+    color: #16a34a;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+.admin-no-data {
+    color: #d1d5db;
+}
+
+.admin-stock-badge {
+    font-size: 13px;
+    font-weight: 600;
+    color: #15803d;
+    background: #f0fdf4;
+    padding: 3px 10px;
+    border-radius: 6px;
+}
+
+.admin-stock-badge.out {
+    color: #dc2626;
+    background: #fef2f2;
+}
+
+.admin-td-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.admin-edit-btn {
+    padding: 6px 14px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.admin-edit-btn:hover {
+    border-color: #16a34a;
+    color: #16a34a;
+    background: #f0fdf4;
+}
+
+.admin-delete-btn {
+    padding: 6px 14px;
+    border: 1.5px solid #fecaca;
+    border-radius: 6px;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    color: #dc2626;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.admin-delete-btn:hover {
+    background: #fef2f2;
+}
+
+/* Modal */
+.admin-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 24px;
+}
+
+.admin-modal {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+
+.admin-modal-confirm {
+    max-width: 380px;
+    text-align: center;
+}
+
+.admin-modal-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 20px;
+}
+
+.admin-confirm-text {
+    color: #6b7280;
+    font-size: 15px;
+    margin-bottom: 24px;
+}
+
+.admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.admin-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.admin-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.admin-form .form-group label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    text-align: left;
+}
+
+.admin-form .form-group input,
+.admin-form .form-group textarea {
+    padding: 10px 12px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #111827;
+    background: #fafafa;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.admin-form .form-group input:focus,
+.admin-form .form-group textarea:focus {
+    outline: none;
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+    background: #fff;
+}
+
+.admin-form-error {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.admin-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.admin-modal-confirm .admin-modal-actions {
+    justify-content: center;
+}
+
+.admin-cancel-btn {
+    padding: 10px 20px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b7280;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.admin-cancel-btn:hover {
+    background: #f3f4f6;
+}
+
+.admin-save-btn {
+    padding: 10px 24px;
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.admin-save-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.admin-delete-confirm-btn {
+    padding: 10px 24px;
+    background: #dc2626;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.admin-delete-confirm-btn:hover {
+    opacity: 0.9;
+}
