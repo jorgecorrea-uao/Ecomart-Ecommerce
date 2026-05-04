@@ -15,9 +15,11 @@ app.use(express.json());
 
 const authRoutes = require('./src/routes/auth.routes');
 const productRoutes = require('./src/routes/product.routes');
+const cartRoutes = require('./src/routes/cart.routes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/cart', cartRoutes);
 
 sequelize.sync({ alter: true })
   .then(() => console.log('Base de datos sincronizada'))
