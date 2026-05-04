@@ -1,14 +1,20 @@
 import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import productService from "../../services/product.service"
+import { useCart } from "../../context/CartContext"
+import { useAuth } from "../../context/AuthContext"
 import "./ProductDetailPage.css"
 
 const ProductDetailPage = () => {
     const { id } = useParams()
     const navigate = useNavigate()
+    const { user } = useAuth()
+    const { addItem } = useCart()
     const [product, setProduct] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState("")
+    const [addLoading, setAddLoading] = useState(false)
+    const [addSuccess, setAddSuccess] = useState(false)
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -23,6 +29,20 @@ const ProductDetailPage = () => {
         }
         fetchProduct()
     }, [id])
+
+    const handleAddToCart = async () => {
+        if (!user) return navigate("/login")
+        setAddLoading(true)
+        try {
+            await addItem(product.id, 1)
+            setAddSuccess(true)
+            setTimeout(() => setAddSuccess(false), 2000)
+        } catch (err) {
+            setError(err.response?.data?.message || "Error al agregar al carrito")
+        } finally {
+            setAddLoading(false)
+        }
+    }
 
     if (loading) return <div className="detail-loading">Cargando producto...</div>
     if (error) return (
@@ -62,10 +82,17 @@ const ProductDetailPage = () => {
                     </div>
 
                     <button
-                        className="detail-add-btn"
-                        disabled={product.stock === 0}
+                        className={`detail-add-btn ${addSuccess ? "success" : ""}`}
+                        disabled={product.stock === 0 || addLoading}
+                        onClick={handleAddToCart}
                     >
-                        {product.stock === 0 ? "Sin stock" : "Agregar al carrito"}
+                        {product.stock === 0
+                            ? "Sin stock"
+                            : addLoading
+                                ? "Agregando..."
+                                : addSuccess
+                                    ? "¡Agregado! ✓"
+                                    : "Agregar al carrito"}
                     </button>
                 </div>
             </div>

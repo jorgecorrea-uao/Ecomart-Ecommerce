@@ -133,6 +133,10 @@
     box-shadow: none;
 }
 
+.detail-add-btn.success {
+    background: linear-gradient(135deg, #15803d, #16a34a);
+}
+
 .detail-loading {
     text-align: center;
     padding: 80px 0;

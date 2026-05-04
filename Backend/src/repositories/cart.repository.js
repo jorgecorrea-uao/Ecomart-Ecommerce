@@ -1,9 +1,13 @@
 const Cart = require('../models/cart.model');
+const CartItem = require('../models/cartItem.model');
 
 const cartRepository = {
 
   async findActiveByUserId(userId) {
-    return await Cart.findOne({ where: { userId, status: 'active' } });
+    return await Cart.findOne({
+      where: { userId, status: 'active' },
+      include: [{ model: CartItem }],
+    });
   },
 
   async findAllByUserId(userId) {
