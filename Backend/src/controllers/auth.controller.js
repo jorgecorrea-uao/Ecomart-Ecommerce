@@ -15,6 +15,11 @@ const authController = {
         return res.status(400).json({ success: false, message: 'Todos los campos son obligatorios' });
       }
 
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({ success: false, message: 'Formato de correo electrónico inválido' });
+      }
+
       const user = await authService.register(nombre, email.toLowerCase(), password);
       return res.status(201).json({ success: true, message: 'Usuario registrado exitosamente', data: user });
 
