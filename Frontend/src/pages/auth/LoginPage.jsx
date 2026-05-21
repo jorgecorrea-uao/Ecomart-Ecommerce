@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link, useNavigate, useLocation } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
+import authService from "../../services/auth.service"
 import "./auth.css"
 
 const LoginPage = () => {
@@ -26,7 +27,12 @@ const LoginPage = () => {
         try {
             const response = await login(formData.email, formData.password)
             if (response.success) {
-                navigate("/home")
+                const currentUser = authService.getCurrentUser()
+                if (currentUser.role === "admin") {
+                    navigate("/admin/products")
+                } else {
+                    navigate("/products")
+                }
             } else {
                 setError(response.message || "Error al iniciar sesión")
             }

@@ -24,6 +24,8 @@ const RegisterPage = () => {
 
         if (!nombre || !email || !password || !confirmPassword)
             return setError("Por favor completa todos los campos")
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(email)) return setError("Correo electrónico no tiene un formato válido")
         if (password.length < 6)
             return setError("La contraseña debe tener al menos 6 caracteres")
         if (password !== confirmPassword)

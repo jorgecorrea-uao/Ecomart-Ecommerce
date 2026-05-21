@@ -15,6 +15,7 @@ const ProductDetailPage = () => {
     const [error, setError] = useState("")
     const [addLoading, setAddLoading] = useState(false)
     const [addSuccess, setAddSuccess] = useState(false)
+    const [selectedQty, setSelectedQty] = useState(1)
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -34,14 +35,25 @@ const ProductDetailPage = () => {
         if (!user) return navigate("/login")
         setAddLoading(true)
         try {
-            await addItem(product.id, 1)
+            await addItem(product.id, selectedQty)
             setAddSuccess(true)
-            setTimeout(() => setAddSuccess(false), 2000)
+            setTimeout(() => {
+                setAddSuccess(false)
+                navigate("/products")
+            }, 700)
         } catch (err) {
             setError(err.response?.data?.message || "Error al agregar al carrito")
         } finally {
             setAddLoading(false)
         }
+    }
+
+    const decreaseQty = () => {
+        setSelectedQty(q => Math.max(1, q - 1))
+    }
+
+    const increaseQty = () => {
+        setSelectedQty(q => Math.min(product.stock || 1, q + 1))
     }
 
     if (loading) return <div className="detail-loading">Cargando producto...</div>
@@ -81,19 +93,27 @@ const ProductDetailPage = () => {
                             : `${product.stock} unidades disponibles`}
                     </div>
 
-                    <button
-                        className={`detail-add-btn ${addSuccess ? "success" : ""}`}
-                        disabled={product.stock === 0 || addLoading}
-                        onClick={handleAddToCart}
-                    >
-                        {product.stock === 0
-                            ? "Sin stock"
-                            : addLoading
-                                ? "Agregando..."
-                                : addSuccess
-                                    ? "¡Agregado! ✓"
-                                    : "Agregar al carrito"}
-                    </button>
+                    <div className="detail-qty-row">
+                        <div className="qty-controls">
+                            <button className="qty-btn" onClick={decreaseQty} disabled={addLoading || product.stock === 0}>−</button>
+                            <span className="qty-value">{selectedQty}</span>
+                            <button className="qty-btn" onClick={increaseQty} disabled={addLoading || product.stock === 0}>+</button>
+                        </div>
+
+                        <button
+                            className={`detail-add-btn ${addSuccess ? "success" : ""}`}
+                            disabled={product.stock === 0 || addLoading}
+                            onClick={handleAddToCart}
+                        >
+                            {product.stock === 0
+                                ? "Sin stock"
+                                : addLoading
+                                    ? "Agregando..."
+                                    : addSuccess
+                                        ? "¡Agregado! ✓"
+                                        : "Agregar al carrito"}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -21,6 +21,10 @@ const cartController = {
       if (KNOWN_ERRORS.includes(error.message)) {
         return res.status(400).json({ success: false, message: error.message });
       }
+      // Stock errors return 409 Conflict
+      if (error.message && error.message.includes('Stock insuficiente')) {
+        return res.status(409).json({ success: false, message: error.message });
+      }
       return res.status(500).json({ success: false, message: 'Error interno del servidor' });
     }
   },

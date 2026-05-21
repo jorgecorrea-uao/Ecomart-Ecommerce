@@ -1,10 +1,39 @@
-const cartService = require('../services/cart.service');
+jest.mock('../repositories/cart.repository', () => ({
+  findActiveByUserId: jest.fn(),
+  findAllByUserId: jest.fn(),
+  save: jest.fn(),
+  update: jest.fn(),
+}));
+
+jest.mock('../config/db', () => ({
+  transaction: jest.fn(),
+}));
+jest.mock('../models/cartItem.model', () => ({}));
+jest.mock('../models/product.model', () => ({
+  findByPk: jest.fn(),
+}));
+
 const cartRepository = require('../repositories/cart.repository');
+const sequelize = require('../config/db');
+const Product = require('../models/product.model');
+const cartService = require('../services/cart.service');
 
-jest.mock('../repositories/cart.repository');
+const mockActiveCart = {
+  id: 1,
+  userId: 1,
+  status: 'active',
+  CartItems: [],
+  reload: jest.fn(),
+  update: jest.fn(),
+};
 
-const mockActiveCart = { id: 1, userId: 1, status: 'active' };
 const mockPaidCart = { id: 1, userId: 1, status: 'paid' };
+
+const createTransaction = () => ({
+  commit: jest.fn(),
+  rollback: jest.fn(),
+  LOCK: { UPDATE: 'UPDATE' },
+});
 
 beforeEach(() => jest.clearAllMocks());
 
@@ -30,14 +59,65 @@ describe('CartService - getOrCreate', () => {
 });
 
 describe('CartService - checkout', () => {
-  test('debe cambiar el status a paid', async () => {
-    cartRepository.findActiveByUserId.mockResolvedValue(mockActiveCart);
-    cartRepository.update.mockResolvedValue(mockPaidCart);
+  test('debe descontar stock y cambiar el status a paid dentro de una transacción', async () => {
+    const transaction = createTransaction();
+    const cart = {
+      ...mockActiveCart,
+      CartItems: [{ productId: 10, cantidad: 2 }],
+      reload: jest.fn().mockResolvedValue(undefined),
+      update: jest.fn().mockResolvedValue(undefined),
+    };
+    const product = {
+      id: 10,
+      nombre: 'Camiseta',
+      stock: 5,
+      update: jest.fn().mockResolvedValue(undefined),
+    };
+
+    cartRepository.findActiveByUserId.mockResolvedValue(cart);
+    sequelize.transaction.mockResolvedValue(transaction);
+    Product.findByPk.mockResolvedValue(product);
 
     const result = await cartService.checkout(1);
 
-    expect(cartRepository.update).toHaveBeenCalledWith(1, { status: 'paid' });
-    expect(result.status).toBe('paid');
+    expect(sequelize.transaction).toHaveBeenCalled();
+    expect(cart.reload).toHaveBeenCalledWith({
+      include: [{ model: expect.any(Object) }],
+      transaction,
+    });
+    expect(Product.findByPk).toHaveBeenCalledWith(10, { transaction, lock: transaction.LOCK.UPDATE });
+    expect(product.update).toHaveBeenCalledWith({ stock: 3 }, { transaction });
+    expect(cart.update).toHaveBeenCalledWith({ status: 'paid' }, { transaction });
+    expect(transaction.commit).toHaveBeenCalled();
+    expect(transaction.rollback).not.toHaveBeenCalled();
+    expect(result).toBe(cart);
+  });
+
+  test('debe hacer rollback si no hay stock suficiente', async () => {
+    const transaction = createTransaction();
+    const cart = {
+      ...mockActiveCart,
+      CartItems: [{ productId: 10, cantidad: 6 }],
+      reload: jest.fn().mockResolvedValue(undefined),
+      update: jest.fn().mockResolvedValue(undefined),
+    };
+    const product = {
+      id: 10,
+      nombre: 'Camiseta',
+      stock: 5,
+      update: jest.fn().mockResolvedValue(undefined),
+    };
+
+    cartRepository.findActiveByUserId.mockResolvedValue(cart);
+    sequelize.transaction.mockResolvedValue(transaction);
+    Product.findByPk.mockResolvedValue(product);
+
+    await expect(cartService.checkout(1)).rejects.toThrow('Stock insuficiente para Camiseta');
+
+    expect(transaction.rollback).toHaveBeenCalled();
+    expect(transaction.commit).not.toHaveBeenCalled();
+    expect(product.update).not.toHaveBeenCalled();
+    expect(cart.update).not.toHaveBeenCalled();
   });
 
   test('debe lanzar error si no hay cart activo', async () => {
